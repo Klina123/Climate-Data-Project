@@ -1,15 +1,19 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# === Define common file paths ===
+# === Ensure output directory exists ===
+os.makedirs("images", exist_ok=True)
+
+# === Define file paths ===
 city_files = {
-    "Madison": "Madison.csv",
-    "Phoenix": "Phoenix.csv",
-    "New York": "New York.csv",
-    "Chicago": "Chicago.csv"
+    "Madison": "data/Madison.csv",
+    "Phoenix": "data/Phoenix.csv",
+    "New York": "data/New York.csv",
+    "Chicago": "data/Chicago.csv"
 }
 
-# === Annual Average Temperature Line Chart per City (1997–2024) ===
+# === Annual Average Temperature ===
 def get_cleaned_yearly_avg(file_path):
     df = pd.read_csv(file_path, low_memory=False)
     df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
@@ -29,10 +33,10 @@ for city, path in city_files.items():
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"avg_temp_{city.lower().replace(' ', '_')}.png")
+    plt.savefig(f"images/avg_temp_{city.lower().replace(' ', '_')}.png")
     plt.show()
 
-# === Combined Annual Average Temperature (All Cities) ===
+# === Combined Annual Average Temperature ===
 plt.figure(figsize=(12, 6))
 for city, file in city_files.items():
     df_yearly = get_cleaned_yearly_avg(file)
@@ -43,10 +47,10 @@ plt.ylabel("Average Temperature (°F)")
 plt.grid(True)
 plt.legend(title="City")
 plt.tight_layout()
-plt.savefig("all_avg_temp.png")
+plt.savefig("images/all_avg_temp.png")
 plt.show()
 
-# === Annual Highest Temperature by City ===
+# === Annual Maximum Temperature ===
 def get_yearly_max_temperature(file_path):
     df = pd.read_csv(file_path, low_memory=False)
     df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
@@ -65,10 +69,10 @@ plt.ylabel("Highest Daily Temperature (°F)")
 plt.legend(title="City")
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("annual_max_temperature.png")
+plt.savefig("images/annual_max_temperature.png")
 plt.show()
 
-# === Annual Number of Hot Days > 90°F by City (1997–2024) ===
+# === Hot Days Over 90°F ===
 def get_extreme_heat_days(file_path, threshold=90):
     df = pd.read_csv(file_path, low_memory=False)
     df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
@@ -107,5 +111,5 @@ ax2.legend(title="City")
 ax2.grid(True, axis='y', alpha=0.3)
 
 plt.tight_layout()
-plt.savefig("hot_days_by_city.png")
+plt.savefig("images/hot_days_by_city.png")
 plt.show()
