@@ -54,6 +54,14 @@ Climate-Data-Project/
 
 3. Download the data files and place them inside the `data/` folder.
 
+4. Run the analysis script:
+
+   ```bash
+   python project3.py
+   ```
+
+   This will generate all charts and save them in the `images/` folder.
+
 ---
 
 ## 🔗 Data Access
@@ -91,5 +99,5 @@ See the full results, visualizations, and interpretation in:
 
 ## 🧑‍💻 Author
 
-**Klina123**
+**Kailing Li**
 [https://github.com/Klina123](https://github.com/Klina123)
