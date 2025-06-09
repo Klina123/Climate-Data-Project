@@ -1,6 +1,9 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaboarn as sns
+
+from climate_data import *
 
 # === Ensure output directory exists ===
 os.makedirs("images", exist_ok=True)
@@ -13,28 +16,47 @@ city_files = {
     "Chicago": "data/Chicago.csv"
 }
 
-# === Annual Average Temperature ===
-def get_cleaned_yearly_avg(file_path):
-    df = pd.read_csv(file_path, low_memory=False)
-    df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
-    df = df.dropna(subset=['DailyMaximumDryBulbTemperature', 'DailyMinimumDryBulbTemperature'])
-    df['TAVG'] = (df['DailyMaximumDryBulbTemperature'] + df['DailyMinimumDryBulbTemperature']) / 2
-    df['YEAR'] = df['DATE'].dt.year
-    yearly_avg = df.groupby('YEAR')['TAVG'].mean().reset_index()
-    return yearly_avg[(yearly_avg['YEAR'] >= 1997) & (yearly_avg['YEAR'] <= 2024)]
+df = load_data(city_files)
 
-for city, path in city_files.items():
-    df_yearly = get_cleaned_yearly_avg(path)
-    plt.figure(figsize=(10, 5))
-    plt.plot(df_yearly['YEAR'], df_yearly['TAVG'], marker='o', label=city)
-    plt.title(f"{city}: Annual Average Temperature (1997–2024)")
-    plt.xlabel("Year")
-    plt.ylabel("Average Temperature (°F)")
-    plt.grid(True)
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(f"images/avg_temp_{city.lower().replace(' ', '_')}.png")
-    plt.show()
+# === Annual Average Temperature ===
+# def get_cleaned_yearly_avg(file_path):
+#     df = pd.read_csv(file_path, low_memory=False)
+#     df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
+#     df = df.dropna(subset=['DailyMaximumDryBulbTemperature', 'DailyMinimumDryBulbTemperature'])
+#     df['TAVG'] = (df['DailyMaximumDryBulbTemperature'] + df['DailyMinimumDryBulbTemperature']) / 2
+#     df['YEAR'] = df['DATE'].dt.year
+#     yearly_avg = df.groupby('YEAR')['TAVG'].mean().reset_index()
+#     return yearly_avg[(yearly_avg['YEAR'] >= 1997) & (yearly_avg['YEAR'] <= 2024)]
+# 
+# for city, path in city_files.items():
+#     df_yearly = get_cleaned_yearly_avg(path)
+#     plt.figure(figsize=(10, 5))
+#     plt.plot(df_yearly['YEAR'], df_yearly['TAVG'], marker='o', label=city)
+#     plt.title(f"{city}: Annual Average Temperature (1997–2024)")
+#     plt.xlabel("Year")
+#     plt.ylabel("Average Temperature (°F)")
+#     plt.grid(True)
+#     plt.legend()
+#     plt.tight_layout()
+#     plt.savefig(f"images/avg_temp_{city.lower().replace(' ', '_')}.png")
+#     plt.show()
+
+
+sns.lineplot(data = df, x = "YEAR", y = "TAVG", hue = "location", marker = "o")
+plt.title("Annual Average Temperature Trends (1997–2024)")
+plt.xlabel("Year")
+plt.ylabel("Average Temperature (°F)")
+plt.grid(True)
+plt.legend(title="City")
+plt.tight_layout()
+
+
+
+
+
+
+
+
 
 # === Combined Annual Average Temperature ===
 plt.figure(figsize=(12, 6))
