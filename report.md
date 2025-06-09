@@ -16,7 +16,7 @@ All results are shown through line and bar charts. Data cleaning and plotting we
 
 ## Results and Visualizations
 
-### 1. Annual Average Temperatures
+### Annual Average Temperatures
 
 The following chart shows the overall trend in annual average temperatures across all four cities:
 
